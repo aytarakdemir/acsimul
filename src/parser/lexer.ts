@@ -1,8 +1,8 @@
 
 const regexPlace = /--place\("([a-zA-Z0-9_\-]+)",\s*([+\-]?\d+)\)/ig;
-const regexIn = /--in\("([a-zA-Z0-9_\-]+)",\s*([+\-]?\d+)\)/ig;
-const regexOut = /--out\("([a-zA-Z0-9_\-]+)",\s*([+\-]?\d+)\)/ig;
-const regexTransition = /--transition\(\[((\("[a-zA-Z0-9_\-]*"\)\s*)*)\]\s*,\s*\[((\("[a-zA-Z0-9_\-]*"\)\s*)*)\]\s*,\s*([+\-]?\d+)\)/ig;
+const regexIn = /--in\("([a-zA-Z0-9_\-]+)",\s*"([a-zA-Z0-9_\-]+)",\s*([+\-]?\d+)\)/ig;
+const regexOut = /--out\("([a-zA-Z0-9_\-]+)",\s*"([a-zA-Z0-9_\-]+)",\s*([+\-]?\d+)\)/ig;
+const regexTransition = /--transition\("([a-zA-Z0-9_\-]+)",\s*\[((\("[a-zA-Z0-9_\-]*"\)\s*)*)\]\s*,\s*\[((\("[a-zA-Z0-9_\-]*"\)\s*)*)\]\s*\)/ig;
 
 
 export function tokenize(input: string): IToken[] {
