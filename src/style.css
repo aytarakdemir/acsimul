@@ -13,6 +13,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -44,7 +48,7 @@ h1 {
 
 .logo {
   height: 6em;
-  padding: 1.5em;
+  padding: 0;
   will-change: filter;
   transition: filter 300ms;
 }
@@ -77,6 +81,22 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+textarea {
+  border-radius: 5px;
+  border: 1px solid #383838;
+  min-height: 200px;
+  max-height: 50vh;
+  min-width: 300px;
+  max-width: 50vw;
+  padding: 10px;
+}
+
+.ac-petri-input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 @media (prefers-color-scheme: light) {

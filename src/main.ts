@@ -1,8 +1,6 @@
 import './style.css'
 import typescriptLogo from './assets/typescript.svg'
-import { Transition } from './petri/transition';
-import { OutArrow, InArrow } from './petri/arrow';
-import { Place } from './petri/place';
+import { tokenize } from './parser/lexer';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -10,70 +8,22 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
     </a>
     <h1>ACSimul</h1>
+    <div class="ac-petri-input">
+    <label>Enter the Petri net configuration</label>
+    <textarea id="textarea-petri-config"></textarea>
+    <button id="btn-console">Generate</button>
+    </div>
     <p class="read-the-docs">
     Check the browser console
     </p>
-    <button id="btn-console">Debug</button>
   </div>
 `
 
-const btn: HTMLButtonElement = document.getElementById('btn-console') as HTMLButtonElement;
+const btn: HTMLButtonElement = document.getElementById("btn-console") as HTMLButtonElement;
+const textAreaPetriConfig: HTMLTextAreaElement = document.getElementById("textarea-petri-config") as HTMLTextAreaElement;
 
 btn.addEventListener("click", () => {
-  console.log("debug");       
+  console.log(textAreaPetriConfig.value);       
+
+  console.log(tokenize(textAreaPetriConfig.value));
 })
-
-
-const p1 = new Place(4);
-const p2 = new Place(2);
-const p3 = new Place(0);
-let places = {
-  p1: p1.tokenCount,
-  p2: p2.tokenCount,
-  p3: p3.tokenCount,
-};
-
-console.table(places);
-
-
-const arrowsOfT1 = [
-  new InArrow(2, p1),
-  new InArrow(1, p2),
-  new OutArrow(1, p3),
-];
-const t1 = new Transition(arrowsOfT1);
-
-
-const arrowsOfT2 = [
-  new InArrow(2, p3)
-];
-const t2 = new Transition(arrowsOfT2)
-
-if (t1.isFireable()) {
-  console.log("Firing Transition 1...")
-  t1.fire();
-} else {
-  console.log("Transition 1 is not fireable.");
-}
-
-if (t1.isFireable()) {
-  console.log("Firing Transition 1...")
-  t1.fire();
-} else {
-  console.log("Transition 1 is not fireable.");
-}
-
-if (t2.isFireable()) {
-  console.log("Firing Transition 2...")
-  t2.fire();
-} else {
-  console.log("Transition 2 is not fireable.");
-}
-
-places = {
-  p1: p1.tokenCount,
-  p2: p2.tokenCount,
-  p3: p3.tokenCount,
-};
-
-console.table(places);
