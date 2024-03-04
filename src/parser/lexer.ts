@@ -1,3 +1,6 @@
+import { IArrow, InArrow, OutArrow } from "../petri/arrow";
+import { Place } from "../petri/place";
+import { Transition } from "../petri/transition";
 
 const regexPlace = /--place\("([a-zA-Z0-9_\-]+)",\s*([+\-]?\d+)\)/ig;
 const regexIn = /--in\("([a-zA-Z0-9_\-]+)",\s*"([a-zA-Z0-9_\-]+)",\s*([+\-]?\d+)\)/ig;
@@ -27,11 +30,34 @@ export function tokenize(input: string): IToken[] {
             throw new Error(`Syntax error: ${input.substring(0, input.indexOf("--",1))}`);
         }
     }
+    tokens.sort((a: IToken, b: IToken) => {
+        function prioritize(constructorName: string): number {
+            switch (constructorName) {
+                case "PlaceToken":
+                    return 1;
+                case "InToken":
+                    return 2;
+                case "OutToken":
+                    return 3;
+                case "TransitionToken":
+                    return 4;
+            }
+            return -1;
+        }
+
+        const aPriority = prioritize(a.constructor.name);
+        const bPriority = prioritize(b.constructor.name);
+
+        return aPriority - bPriority;
+    });
     return tokens;
 }
 
 export interface IToken {
-    generateInstance(): void;
+    generateInstance(placeMap: Map<string, Place>,
+                     arrowMap: Map<string, IArrow>, 
+                     transitionMap: Map<string, Transition>
+                    ): void;
 }
 
 class PlaceToken {
@@ -44,8 +70,11 @@ class PlaceToken {
         return {name: name, tokenCount: parseInt(tokenCount)};
     }
 
-    public generateInstance(): void {
+    public generateInstance(placeMap: Map<string, Place>): void {
         console.log(this.parseToken());
+        const placeParameters = this.parseToken();
+
+        placeMap.set(placeParameters.name, new Place(placeParameters.tokenCount));
     }
 }
 
@@ -65,9 +94,11 @@ class InToken {
         return {inName: inName, placeName: placeName, tokenThroughput: parseInt(tokenThroughput)};
     }
 
-    public generateInstance(): void {
+    public generateInstance(placeMap: Map<string, Place>, arrowMap: Map<string, IArrow>): void {
         console.log(this.parseToken());
-
+        const arrowParameters = this.parseToken();
+        if (placeMap.has(arrowParameters.placeName))
+            arrowMap.set(arrowParameters.inName, new InArrow(arrowParameters.tokenThroughput, placeMap.get(arrowParameters.placeName)!));
     }
 }
 
@@ -87,8 +118,12 @@ class OutToken {
         return {outName: outName, placeName: placeName, tokenThroughput: parseInt(tokenThroughput)};
     }
 
-    public generateInstance(): void {
+    public generateInstance(placeMap: Map<string, Place>, arrowMap: Map<string, IArrow>): void {
         console.log(this.parseToken());
+        const arrowParameters = this.parseToken();
+        if (placeMap.has(arrowParameters.placeName))
+            arrowMap.set(arrowParameters.outName, new OutArrow(arrowParameters.tokenThroughput, placeMap.get(arrowParameters.placeName)!));
+
     }
 }
 
@@ -112,8 +147,21 @@ class TransitionToken {
         return {transitionName: transitionName, inNameList: parseTransitionParentheses(inListStr), outNameList: parseTransitionParentheses(outListStr)};
     }
 
-    public generateInstance(): void {
+    public generateInstance(_placeMap: Map<string, Place>, arrowMap: Map<string, IArrow>, transitionMap: Map<string, Transition>): void {
         console.log(this.parseToken());
+        const transitionParameters = this.parseToken();
+        const arrowValues: IArrow[] = [];
+        transitionParameters.inNameList.forEach((name: string) => {
+            if (arrowMap.has(name))
+                arrowValues.push(arrowMap.get(name)!);
+        });
+
+        transitionParameters.outNameList.forEach((name: string) => {
+            if (arrowMap.has(name))
+                arrowValues.push(arrowMap.get(name)!);
+        });
+        
+        transitionMap.set(transitionParameters.transitionName, new Transition(arrowValues));
     }
 }
 

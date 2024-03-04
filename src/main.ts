@@ -2,6 +2,9 @@ import './style.css'
 import typescriptLogo from './assets/typescript.svg'
 import { tokenize } from './parser/lexer';
 import { IToken } from './parser/lexer';
+import { IArrow } from './petri/arrow';
+import { Transition } from './petri/transition';
+import { Place } from './petri/place';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -18,8 +21,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 --place("p3", 0)
 --in("i1","p1", 2)
 --in("i2","p2", 1)
---transition("t1",[],[("aa")])
---in("i3","p3", 2)
+--transition("t1",[("i1")("i2")],[("o1")])
     </textarea>
     <button id="btn-console">Generate</button>
     </div>
@@ -33,12 +35,20 @@ const btn: HTMLButtonElement = document.getElementById("btn-console") as HTMLBut
 const textAreaPetriConfig: HTMLTextAreaElement = document.getElementById("textarea-petri-config") as HTMLTextAreaElement;
 
 btn.addEventListener("click", () => {
-  console.log(textAreaPetriConfig.value);       
-
   const tokens = tokenize(textAreaPetriConfig.value);
-  console.log(tokens);
+
+  const places = new Map<string, Place>();
+  const arrows = new Map<string, IArrow>();
+  const transitions = new Map<string, Transition>();
 
   tokens.forEach((token: IToken) => {
-    token.generateInstance();
+    token.generateInstance(places, arrows, transitions);
   })
+
+  console.log(places, arrows, transitions);
+  console.log(structuredClone(places));
+  transitions.get('t1')?.fire();
+  console.log(structuredClone(places));
+
+
 })

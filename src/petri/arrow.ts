@@ -1,12 +1,12 @@
 import { Place } from "./place";
 
 
-export interface Iarrow {
+export interface IArrow {
     moveTokens(): void;
     areTokensMovable(): boolean;
 }
 
-export class InArrow implements Iarrow {
+export class InArrow implements IArrow {
     private tokenThroughput: number;
     private associatedPlace: Place;
 
@@ -24,7 +24,7 @@ export class InArrow implements Iarrow {
     }
 }
 
-export class OutArrow implements Iarrow {
+export class OutArrow implements IArrow {
     private tokenThroughput: number;
     private associatedPlace: Place;
 
