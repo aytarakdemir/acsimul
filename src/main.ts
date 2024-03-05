@@ -1,10 +1,7 @@
 import './style.css'
 import typescriptLogo from './assets/typescript.svg'
 import { tokenize } from './parser/lexer';
-import { IToken } from './parser/lexer';
-import { IArrow } from './petri/arrow';
-import { Transition } from './petri/transition';
-import { Place } from './petri/place';
+import { PetriNet } from './petri/petri-net';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -37,18 +34,17 @@ const textAreaPetriConfig: HTMLTextAreaElement = document.getElementById("textar
 btn.addEventListener("click", () => {
   const tokens = tokenize(textAreaPetriConfig.value);
 
-  const places = new Map<string, Place>();
-  const arrows = new Map<string, IArrow>();
-  const transitions = new Map<string, Transition>();
+  const petriNet = new PetriNet(tokens);
+  console.log(petriNet.getPlaceState());
+  
+  petriNet.fireTransition("t1");
 
-  tokens.forEach((token: IToken) => {
-    token.generateInstance(places, arrows, transitions);
-  })
+  petriNet.fireTransition("t1");
 
-  console.log(places, arrows, transitions);
-  console.log(structuredClone(places));
-  transitions.get('t1')?.fire();
-  console.log(structuredClone(places));
+  petriNet.fireTransition("t1");
+  
+  console.log(petriNet.getPlaceState());
+
 
 
 })
