@@ -27,9 +27,21 @@ export class PetriNet {
         }
     }
 
-    public getPlaceState(): number[] {
-        return [...this._places.values()].map((place: Place) => place.tokenCount);
+    public getPlaceState(): Map<string, number> {
+        const placeState = new Map<string, number>();
+        this._places.forEach((place, key) => {
+            placeState.set(key, place.tokenCount);
+        });
+        return placeState;
     }
 
+    public setPlaceState(placeState: Map<string, number>): void {
+        placeState.forEach((tokenCount, key) => {
+            if (this._places.has(key)) {
+                this._places.get(key)!.tokenCount = tokenCount;
+            } 
+        })
+        this._places
+    }
 
 }

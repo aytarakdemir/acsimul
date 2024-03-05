@@ -11,6 +11,10 @@ export class Place {
         return this._tokenCount;
     }
 
+    set tokenCount(count: number) {
+        this._tokenCount = count;
+    }
+
     public addTokens(numberOfTokens: number): void {
         this._tokenCount += numberOfTokens;
     }

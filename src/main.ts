@@ -44,6 +44,9 @@ btn.addEventListener("click", () => {
   petriNet.fireTransition("t1");
   
   console.log(petriNet.getPlaceState());
+  
+  petriNet.setPlaceState(new Map<string, number>([["p1", 5],["p2", 5],["p3", 0]]));
+  console.log(petriNet.getPlaceState());
 
 
 
