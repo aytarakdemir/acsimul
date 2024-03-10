@@ -2,6 +2,7 @@ import './style.css'
 import typescriptLogo from './assets/typescript.svg'
 import { tokenize } from './parser/lexer';
 import { PetriNet } from './petri/petri-net';
+import { TreeNode } from './tree/tree-node';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -19,6 +20,9 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 --in("i1","p1", 2)
 --in("i2","p2", 1)
 --transition("t1",[("i1")("i2")],[("o1")])
+--in("i3","p3", 1)
+--out("o2","p1", 2)
+--transition("t2",[("i3")],[("o2")])
     </textarea>
     <button id="btn-console">Generate</button>
     </div>
@@ -38,15 +42,23 @@ btn.addEventListener("click", () => {
   console.log(petriNet.getPlaceState());
   
   petriNet.fireTransition("t1");
-
+  const root = new TreeNode(petriNet.getPlaceState());
+  
   petriNet.fireTransition("t1");
-
+  root.addChild(new TreeNode(petriNet.getPlaceState()));
+  
   petriNet.fireTransition("t1");
   
+  root.addChild(new TreeNode(petriNet.getPlaceState()));
+  root.children[0].addChild(new TreeNode(petriNet.getPlaceState()));
+  
+  console.log("The tree", root);
+  
+  petriNet.fireTransition("t2");
   console.log(petriNet.getPlaceState());
   
-  petriNet.setPlaceState(new Map<string, number>([["p1", 5],["p2", 5],["p3", 0]]));
-  console.log(petriNet.getPlaceState());
+  // petriNet.setPlaceState(new Map<string, number>([["p1", 5],["p2", 5],["p3", 0]]));
+  // console.log(petriNet.getPlaceState());
 
 
 
