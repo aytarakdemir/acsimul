@@ -71,7 +71,7 @@ class PlaceToken {
     }
 
     public generateInstance(placeMap: Map<string, Place>): void {
-        console.log(this.parseToken());
+        // console.log(this.parseToken());
         const placeParameters = this.parseToken();
 
         placeMap.set(placeParameters.name, new Place(placeParameters.tokenCount));
@@ -95,7 +95,7 @@ class InToken {
     }
 
     public generateInstance(placeMap: Map<string, Place>, arrowMap: Map<string, IArrow>): void {
-        console.log(this.parseToken());
+        // console.log(this.parseToken());
         const arrowParameters = this.parseToken();
         if (placeMap.has(arrowParameters.placeName))
             arrowMap.set(arrowParameters.inName, new InArrow(arrowParameters.tokenThroughput, placeMap.get(arrowParameters.placeName)!));
@@ -119,7 +119,7 @@ class OutToken {
     }
 
     public generateInstance(placeMap: Map<string, Place>, arrowMap: Map<string, IArrow>): void {
-        console.log(this.parseToken());
+        // console.log(this.parseToken());
         const arrowParameters = this.parseToken();
         if (placeMap.has(arrowParameters.placeName))
             arrowMap.set(arrowParameters.outName, new OutArrow(arrowParameters.tokenThroughput, placeMap.get(arrowParameters.placeName)!));
@@ -148,7 +148,7 @@ class TransitionToken {
     }
 
     public generateInstance(_placeMap: Map<string, Place>, arrowMap: Map<string, IArrow>, transitionMap: Map<string, Transition>): void {
-        console.log(this.parseToken());
+        // console.log(this.parseToken());
         const transitionParameters = this.parseToken();
         const arrowValues: IArrow[] = [];
         transitionParameters.inNameList.forEach((name: string) => {

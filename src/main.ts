@@ -3,12 +3,15 @@ import typescriptLogo from './assets/typescript.svg'
 import { tokenize } from './parser/lexer';
 import { PetriNet } from './petri/petri-net';
 import { TreeNode } from './tree/tree-node';
+import { Analyser } from './tree/analyser';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
+<!--    
     <a href="https://www.typescriptlang.org/" target="_blank">
       <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
     </a>
+-->
     <h1>ACSimul</h1>
     <div class="ac-petri-input">
     <label>Enter the Petri net configuration</label>
@@ -39,27 +42,31 @@ btn.addEventListener("click", () => {
   const tokens = tokenize(textAreaPetriConfig.value);
 
   const petriNet = new PetriNet(tokens);
-  console.log(petriNet.getPlaceState());
+  console.log("State", petriNet.getPlaceState());
+  console.log("State", petriNet.getPlaceState());
+
+  const analyser = new Analyser(petriNet);
   
-  petriNet.fireTransition("t1");
-  const root = new TreeNode(petriNet.getPlaceState());
+  // petriNet.fireTransition("t1");
+  // const root = new TreeNode(petriNet.getPlaceState());
   
-  petriNet.fireTransition("t1");
-  root.addChild(new TreeNode(petriNet.getPlaceState()));
+  // petriNet.fireTransition("t1");
+  // root.addChild(new TreeNode(petriNet.getPlaceState()));
   
-  petriNet.fireTransition("t1");
+  // petriNet.fireTransition("t1");
   
-  root.addChild(new TreeNode(petriNet.getPlaceState()));
-  root.children[0].addChild(new TreeNode(petriNet.getPlaceState()));
+  // root.addChild(new TreeNode(petriNet.getPlaceState()));
+  // root.children[0].addChild(new TreeNode(petriNet.getPlaceState()));
   
-  console.log("The tree", root);
+  // console.log("The tree", root);
   
-  petriNet.fireTransition("t2");
-  console.log(petriNet.getPlaceState());
+  // petriNet.fireTransition("t2");
+  // console.log(petriNet.getPlaceState());
   
   // petriNet.setPlaceState(new Map<string, number>([["p1", 5],["p2", 5],["p3", 0]]));
   // console.log(petriNet.getPlaceState());
 
 
+  
 
 })

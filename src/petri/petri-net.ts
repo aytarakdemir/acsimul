@@ -14,6 +14,10 @@ export class PetriNet {
         })
     }
 
+    get transitions(): Map<string, Transition> {
+        return this._transitions;
+    }
+
     public isTransitionFireable(transitionName: string): boolean {
         if (this._transitions.has(transitionName)) {
             return this._transitions.get(transitionName)!.isFireable();
