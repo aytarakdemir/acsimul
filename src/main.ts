@@ -2,7 +2,6 @@ import './style.css'
 import typescriptLogo from './assets/typescript.svg'
 import { tokenize } from './parser/lexer';
 import { PetriNet } from './petri/petri-net';
-import { TreeNode } from './tree/tree-node';
 import { Analyser } from './tree/analyser';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -45,7 +44,7 @@ btn.addEventListener("click", () => {
   console.log("State", petriNet.getPlaceState());
   console.log("State", petriNet.getPlaceState());
 
-  const analyser = new Analyser(petriNet);
+  const analyser = new Analyser(petriNet, new Map<string, number>([["p1", 5],["p2", 5],["p3", 5]]));
   
   // petriNet.fireTransition("t1");
   // const root = new TreeNode(petriNet.getPlaceState());
