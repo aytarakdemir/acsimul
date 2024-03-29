@@ -9,6 +9,7 @@ export class TreeNode {
     constructor(private _state: Map<string, number>, transitionKeys: string[]) {
         this.fireableTransitionStates = new Map<string, boolean>(this.generateTransitionStates(transitionKeys));
         this.statesFromRootUntilThisNode.add(this._state);
+
     }
 
     get state(): Map<string, number> {
