@@ -18,6 +18,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 --place("p1", 2)
 --place("p2", 0)
 --place("p3", 0)
+--place("p4", 0)
 --in("i1","p1", 1)
 --out("o1","p2", 1)
 --transition("t1",[("i1")],[("o1")])
@@ -27,6 +28,9 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 --in("i3","p2", 2)
 --out("o3","p3", 2)
 --transition("t3",[("i3")],[("o3")])
+--in("i4","p2", 1)
+--out("o4","p4", 1)
+--transition("t4",[("i4")],[("o4")])
     </textarea>
     <button id="btn-console">Generate</button>
     </div>
@@ -44,7 +48,7 @@ btn.addEventListener("click", () => {
 
   const petriNet = new PetriNet(tokens);
 
-  const analyser = new Analyser(petriNet, new Map<string, number>([["p1", 5],["p2", 5],["p3", 5]]));
+  new Analyser(petriNet, new Map<string, number>([["p1", 0],["p2", 0],["p3", 0], ["p4", 2]]));
 
 
 
