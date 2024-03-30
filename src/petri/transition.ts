@@ -18,12 +18,12 @@ export class Transition {
 
     public fire(): void {
         if (this.isFireable()) {
-            console.log("Firing...")
+            // console.log("Firing...")
             this._arrows.forEach((arrow: IArrow) => {
                 arrow.moveTokens();
             })    
         } else {
-            console.log("Transition is not fireable.");
+            // console.log("Transition is not fireable.");
         }
     }
 }

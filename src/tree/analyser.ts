@@ -16,9 +16,10 @@ export class Analyser {
 
         // console.log(this.treeRoot.state);
 
+        console.log("The tree with all the possible paths taken",this.treeRoot);
+        console.log(`Searching for the state: ${stringifyState(targetPlaceState)}`);
         this.generateChildrenWithStates(this.treeRoot, targetPlaceState, petriNet);
 
-        console.log("The tree",this.treeRoot);
 
         
 
@@ -40,10 +41,10 @@ export class Analyser {
 
                 if (stringifyState(target) === stringifyState(petriNet.getPlaceState())) {
                     // console.log(child.state)
-                    printStateRecursive(child);
+                    console.log("Path found", printStateRecursive(child));
                 }
-                
                 this.generateChildrenWithStates(child, target, petriNet);
+                
             }
         })
     }
@@ -60,8 +61,10 @@ export class Analyser {
 }
 
 
-function printStateRecursive(node: TreeNode) {
-    console.log(stringifyState(node.state));
+function printStateRecursive(node: TreeNode): Map<string, number>[] {
+    // console.log(stringifyState(node.state));
+    let statesFromTop = [node.state];
     if (node.parent)
-        printStateRecursive(node.parent);
+        statesFromTop = [...printStateRecursive(node.parent), ...statesFromTop];
+    return statesFromTop;
 }

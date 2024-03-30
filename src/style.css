@@ -93,6 +93,12 @@ textarea {
   padding: 10px;
 }
 
+input {
+  border-radius: 5px;
+  border: 1px solid #383838;
+  padding: 10px;
+}
+
 .ac-petri-input {
   display: flex;
   flex-direction: column;

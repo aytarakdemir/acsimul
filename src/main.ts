@@ -3,6 +3,7 @@ import typescriptLogo from './assets/typescript.svg'
 import { tokenize } from './parser/lexer';
 import { PetriNet } from './petri/petri-net';
 import { Analyser } from './tree/analyser';
+import { hashmapifyState } from './util/state';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -13,7 +14,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 -->
     <h1>ACSimul</h1>
     <div class="ac-petri-input">
-    <label>Enter the Petri net configuration</label>
+    <label for="textarea-petri-config">Enter the Petri net configuration</label>
     <textarea id="textarea-petri-config">
 --place("p1", 2)
 --place("p2", 0)
@@ -32,6 +33,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 --out("o4","p4", 1)
 --transition("t4",[("i4")],[("o4")])
     </textarea>
+    <label for="target-config">Enter the target state</label>
+    <input name="target-config" id="target-config" value="p1,0_p2,0_p3,2_p4,0"/>
     <button id="btn-console">Generate</button>
     </div>
     <p class="read-the-docs">
@@ -42,13 +45,14 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
 const btn: HTMLButtonElement = document.getElementById("btn-console") as HTMLButtonElement;
 const textAreaPetriConfig: HTMLTextAreaElement = document.getElementById("textarea-petri-config") as HTMLTextAreaElement;
+const inputTargetConfig: HTMLInputElement = document.getElementById("target-config") as HTMLInputElement;
 
 btn.addEventListener("click", () => {
   const tokens = tokenize(textAreaPetriConfig.value);
 
   const petriNet = new PetriNet(tokens);
 
-  new Analyser(petriNet, new Map<string, number>([["p1", 0],["p2", 0],["p3", 0], ["p4", 2]]));
+  new Analyser(petriNet, hashmapifyState(inputTargetConfig.value));
 
 
 
