@@ -8,7 +8,7 @@ export class Analyser {
 
     private _foundPaths: Map<string, number>[][];
 
-    constructor(private petriNet: PetriNet, private targetPlaceState: Map<string, number>) {
+    constructor(private petriNet: PetriNet, targetPlaceState: Map<string, number>) {
         this._treeRoot = new TreeNode(petriNet.getPlaceState(), this.calculateFireablesList([...this.petriNet.transitions.keys()]));
 
 
