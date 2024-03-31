@@ -134,6 +134,12 @@ input {
 .ac-petri-console {
   display: flex;
   flex-direction: row;
+
+  @media (width <= 900px) {
+    flex-direction: column;
+
+  }
+
   gap: 30px;
 
   .ac-petri-input {
