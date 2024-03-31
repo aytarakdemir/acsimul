@@ -72,7 +72,6 @@ btn.addEventListener("click", () => {
     console.log(error);
     out.appendChild(document.createTextNode(`${error}`));
     out.style.color = "#ff4444"
-
   }
 
   const petriNet = new PetriNet(tokens);
