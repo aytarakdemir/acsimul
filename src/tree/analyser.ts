@@ -4,26 +4,23 @@ import { stringifyState } from "../util/state";
 
 export class Analyser {
 
-    private treeRoot: TreeNode;
+    private _treeRoot: TreeNode;
+
+    private _foundPaths: Map<string, number>[][];
 
     constructor(private petriNet: PetriNet, private targetPlaceState: Map<string, number>) {
-        this.treeRoot = new TreeNode(petriNet.getPlaceState(), this.calculateFireablesList([...this.petriNet.transitions.keys()]));
-        // console.log("The tree",this.treeRoot);
-
-        // console.log([...this.petriNet.transitions.keys()]);
-
-        // console.log([...this.treeRoot.getTransitionStates().keys()]);
-
-        // console.log(this.treeRoot.state);
-
-        console.log("The tree with all the possible paths taken",this.treeRoot);
-        console.log(`Searching for the state: ${stringifyState(targetPlaceState)}`);
-        this.generateChildrenWithStates(this.treeRoot, targetPlaceState, petriNet);
+        this._treeRoot = new TreeNode(petriNet.getPlaceState(), this.calculateFireablesList([...this.petriNet.transitions.keys()]));
 
 
-        
+        console.log("The tree with all the possible paths taken",this._treeRoot);
 
+        this._foundPaths = [];
+        this.generateChildrenWithStates(this._treeRoot, targetPlaceState, petriNet);
 
+    }
+
+    get foundPaths(): Map<string, number>[][] {
+        return structuredClone(this._foundPaths);
     }
 
     private generateChildrenWithStates(parent: TreeNode, target: Map<string, number>, petriNet: PetriNet) {
@@ -40,8 +37,7 @@ export class Analyser {
                 parent.addChild(child);
 
                 if (stringifyState(target) === stringifyState(petriNet.getPlaceState())) {
-                    // console.log(child.state)
-                    console.log("Path found", printStateRecursive(child));
+                    this._foundPaths.push(getStateRecursive(child));
                 }
                 this.generateChildrenWithStates(child, target, petriNet);
                 
@@ -61,10 +57,9 @@ export class Analyser {
 }
 
 
-function printStateRecursive(node: TreeNode): Map<string, number>[] {
-    // console.log(stringifyState(node.state));
+function getStateRecursive(node: TreeNode): Map<string, number>[] {
     let statesFromTop = [node.state];
     if (node.parent)
-        statesFromTop = [...printStateRecursive(node.parent), ...statesFromTop];
+        statesFromTop = [...getStateRecursive(node.parent), ...statesFromTop];
     return statesFromTop;
 }

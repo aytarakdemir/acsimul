@@ -27,7 +27,7 @@ export function tokenize(input: string): IToken[] {
             tokens.push(new TransitionToken(input.match(regexTransition)![0]));
             input = input.slice(input.match(regexTransition)![0].length);
         } else {
-            throw new Error(`Syntax error: ${input.substring(0, input.indexOf("--",1))}`);
+            throw new SyntaxError(`${input.substring(0, input.indexOf("--",1))}`);
         }
     }
     tokens.sort((a: IToken, b: IToken) => {
